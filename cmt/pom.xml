@@ -46,13 +46,14 @@
 	<spring-data-jpa.version>1.6.4.RELEASE</spring-data-jpa.version>
 	<springside.version>4.0.0.GA</springside.version>
 	<org.yaml.version>1.14</org.yaml.version>
+	<lucene.version>5.2.1</lucene.version>
   </properties>
-	<repositories>
+	<!-- <repositories>
 		<repository>
 			<id>snapshots</id>
 			<url>http://124.16.137.205:8081/nexus/content/repositories/snapshots/</url>
 		</repository>
-	</repositories>
+	</repositories> -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -311,7 +312,23 @@
 		<version>1.16.6</version>
 		<scope>provided</scope>
 	</dependency>
-	
+
+	<!-- Lucene -->
+	<dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>${lucene.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-queryparser</artifactId>
+		<version>${lucene.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-analyzers-common</artifactId>
+		<version>${lucene.version}</version>
+	</dependency>		
   </dependencies>
   
   <build>  

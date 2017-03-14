@@ -12,7 +12,7 @@
 
 	<description>Spring common configurations</description>
 
-	<context:component-scan base-package="cn.ac.iscas.cloudeploy.v2">
+	<context:component-scan base-package="cn.ac.iscas.cmt.v2">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
@@ -24,7 +24,7 @@
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
-		<property name="packagesToScan" value="cn.ac.iscas.cloudeploy.v2.model.entity" />
+		<property name="packagesToScan" value="cn.ac.iscas.cmt.v2.model.entity" />
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
@@ -45,7 +45,7 @@
 	</bean>
 
 	<!-- 配置Spring data JPA 去实现DAO 类 -->
-	<jpa:repositories base-package="cn.ac.iscas.cloudeploy.v2.model.dao"
+	<jpa:repositories base-package="cn.ac.iscas.cmt.v2.model.dao"
 		entity-manager-factory-ref="entityManagerFactory"
 		transaction-manager-ref="transactionManager" />
 		

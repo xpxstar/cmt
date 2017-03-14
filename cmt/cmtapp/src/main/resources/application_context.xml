@@ -12,7 +12,7 @@
 
 	<description>Spring common configurations</description>
 
-	<context:component-scan base-package="cn.ac.iscas.cmtapp.v2">
+	<context:component-scan base-package="cn.ac.iscas.cmt.v2">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>

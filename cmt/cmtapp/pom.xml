@@ -12,7 +12,7 @@
 	<packaging>war</packaging>
 	<name>cmt Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<distributionManagement>
+	<!-- <distributionManagement>
 		<repository>
 			<id>releases</id>
 			<url>http://124.16.137.205:8081/nexus/content/groups/public</url>
@@ -22,7 +22,7 @@
 			<url>http://124.16.137.205:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-	<dependencies>
+	 --><dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
