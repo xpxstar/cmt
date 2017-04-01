@@ -54,5 +54,12 @@ public interface ArtifactService {
 	 * @throws IOException 
 	 */
 	public boolean frashIndex() throws IOException;
+	/**
+	 * 根据类别查询制品
+	 * @param category
+	 * @param page
+	 * @return
+	 */
+	Page<Artifact> getArtifactsByCat(String category,Pageable page);
 
 }

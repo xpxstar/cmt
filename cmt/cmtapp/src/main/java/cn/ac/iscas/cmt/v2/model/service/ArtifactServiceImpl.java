@@ -219,7 +219,7 @@ public class ArtifactServiceImpl implements ArtifactService{
 		int pagesize = page.getPageSize();
 		int start = (pagenum-1) * pagesize;
 		int end = start+ pagesize;
-		if(end > top.totalHits){
+		if(end > top.totalHits){//end大于总数则显示最后一页
 			start = top.totalHits-top.totalHits%pagesize;
 			end = top.totalHits;
 		}
@@ -232,5 +232,9 @@ public class ArtifactServiceImpl implements ArtifactService{
 			}
 		}
 		return result;
+	}
+	
+	public Page<Artifact> getArtifactsByCat(String category,Pageable page) {
+		return artifactDAO.findByCategoryContaining(category, page);
 	}
 }

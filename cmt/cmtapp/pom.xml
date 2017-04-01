@@ -9,7 +9,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>cmt_app</artifactId>
-	<packaging>war</packaging>
 	<name>cmt Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<!-- <distributionManagement>
@@ -45,4 +44,5 @@
 	<build>
 		<finalName>cmt_app</finalName>
 	</build>
+	<packaging>war</packaging>
 </project>

@@ -41,7 +41,7 @@ public class ArtifactController {
 	}
 	
 	/**
-	 * 获取应用列表
+	 * 查询应用列表
 	 * 
 	 * @return
 	 * @throws IOException 
@@ -56,7 +56,7 @@ public class ArtifactController {
 		return ViewParser.parseJSONString(art);
 	}
 	/**
-	 * 获取应用列表
+	 * 更新索引
 	 * 
 	 * @return
 	 * @throws IOException 
@@ -66,5 +66,20 @@ public class ArtifactController {
 	@Transactional
 	public String frashIndex() throws IOException {
 		return artifactService.frashIndex()?"success":"fail";
+	}
+	
+	/**
+	 * 按照类别获取制品
+	 * @return
+	 */
+	@RequestMapping(value = {"cat/{pageSize}/{page}"},method = RequestMethod.GET)
+	@ResponseBody
+	@Transactional
+	public String getArtifactsByCat(@RequestParam(value="cat",required=true) String cat,
+			@PathVariable("pageSize") Integer pagesize,@PathVariable("page") Integer page){
+		pagesize = pagesize>20?20:pagesize<1?1:pagesize;
+		Pageable pageable = new PageRequest(page, pagesize);
+		Page<Artifact> art = artifactService.getArtifactsByCat("/"+cat+"/", pageable);
+		return ViewParser.parseJSONString(art);
 	}
 }
