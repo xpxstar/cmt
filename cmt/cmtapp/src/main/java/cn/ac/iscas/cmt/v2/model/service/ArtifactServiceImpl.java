@@ -42,20 +42,22 @@ import cn.ac.iscas.cmt.v2.model.entity.Artifact;
  *	制品的业务逻辑
  */
 @Service
-public class ArtifactServiceImpl implements ArtifactService{
+public class ArtifactServiceImpl {
 	
 	@Autowired
 	private ArtifactDAO artifactDAO;
-	
 	static public String Directory = "";
 	//索引文件
-	Directory dirWrite = null;
+	Directory aWrite = null;
+	Directory pWrite = null;
 	//分词工具
 	Analyzer analyzer = null;;
 	//读取索引
-	IndexReader ireader = null;  
+	IndexReader areader = null;  
+	IndexReader preader = null;  
     //索引搜索
-	IndexSearcher isearcher = null;  
+	IndexSearcher aSearcher = null;  
+	IndexSearcher pSearcher = null;  
     //检索查询
 	QueryParser qp = null;
 	/**
@@ -63,7 +65,6 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 * 
 	 * @return
 	 */
-	@Override
 	public List<Artifact> getAllArtifacts(){
 		return (List<Artifact>) artifactDAO.findAll();
 	}
@@ -74,20 +75,26 @@ public class ArtifactServiceImpl implements ArtifactService{
 	@PostConstruct
 	private void init() throws IOException {
 		Directory = this.getClass().getClassLoader().getResource("").getPath();
-		File dd = new File(Directory+"index");
-		if (!dd.exists()) {
-			dirWrite = FSDirectory.open(dd.toPath());
-			analyzer = new StandardAnalyzer();
-			frashIndex();
-		}else{
-			dirWrite = FSDirectory.open(dd.toPath());
-			analyzer = new StandardAnalyzer();
-			
+		File add = new File(Directory+"ansible");
+		File pdd = new File(Directory+"puppet");
+		analyzer = new StandardAnalyzer();
+		aWrite = FSDirectory.open(add.toPath());
+		pWrite = FSDirectory.open(pdd.toPath());
+		if (!add.exists() || !pdd.exists()) {
+			frashIndex("ansible");
+			frashIndex("puppet");
 		}
-		ireader = DirectoryReader.open(dirWrite);  
-		isearcher = new IndexSearcher(ireader);  
+		areader = DirectoryReader.open(aWrite);  
+		preader = DirectoryReader.open(pWrite);  
+		aSearcher = new IndexSearcher(areader);  
+		pSearcher = new IndexSearcher(preader);  
         qp = new QueryParser("doc", analyzer);  
-	}
+        
+/*        List<Synonyms> synonymsList=  (List<Synonyms>) synonymsDao.findAll();
+		for (Synonyms synonyms : synonymsList) {
+			smap.put(synonyms.getSynonyms(), synonyms.getName());
+		}
+*/	}
 	/**
 	 * service 对象销毁时调用，关闭各种流对象
 	 */
@@ -95,8 +102,10 @@ public class ArtifactServiceImpl implements ArtifactService{
 	private void terminal(){
 		analyzer.close();
 		try {
-			ireader.close();
-			dirWrite.close();
+			areader.close();
+			preader.close();
+			aWrite.close();
+			pWrite.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +117,7 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 * 
 	 * @return
 	 */
-	@Override
+	
 	public Artifact getArtifactById(Long id){
 		return artifactDAO.findOne(id);
 	}
@@ -117,7 +126,7 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 * 
 	 * @return
 	 */
-	@Override
+	
 	public long count(){
 		return artifactDAO.count();
 	}
@@ -126,10 +135,14 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 * @param page
 	 * @return
 	 */
-	@Override
+	
 	public Page<Artifact> getAllArtifacts(Pageable page) {
 		// TODO Auto-generated method stub
 		return artifactDAO.findAll(page);
+	}
+	public Page<Artifact> getArtifactByType(String type,Pageable page) {
+		// TODO Auto-generated method stub
+		return artifactDAO.findArtifactByType(type,page);
 	}
 	/**
 	 * 按照关键字及页面请求返回检索结果
@@ -139,9 +152,10 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 * @return
 	 * @throws IOException
 	 */
-	@Override
-	public Page<Artifact> query(String keyword, Pageable pageable) throws IOException {
-        Query query=null;
+	
+	public Page<Artifact> query(String keyword, Pageable pageable,String type) throws IOException {
+        IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
+		Query query=null;
 		try {
 			query = qp.parse(keyword);
 		} catch (ParseException e) {
@@ -149,34 +163,35 @@ public class ArtifactServiceImpl implements ArtifactService{
 			e.printStackTrace();
 		}  
         System.out.println("Query = " + query);  
-        long start = System.currentTimeMillis();  
-        TopDocs topDocs = isearcher.search(query, Integer.MAX_VALUE);  
-        List<Long> ids = parsePage(pageable, topDocs);
+        long start = System.currentTimeMillis();
+        TopDocs topDocs = null;
+        topDocs = isearcher.search(query, Integer.MAX_VALUE);  
+        List<Long> ids = parsePage(pageable, topDocs,isearcher);
         List<Artifact> content = (List<Artifact>) (artifactDAO.findAll(ids));
         content = reOrder(ids, content);
         System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
-        dirWrite.close();
 		
 		Page<Artifact> result = new PageImpl<>(content, pageable, topDocs.totalHits);
 		return result;
 		
 	}
+	
+	public Page<Artifact> getArtifactByCategory(String cate, Pageable pageable,String type){
+		return artifactDAO.findByCategory(cate,type,pageable);
+	}
 	/**
 	 * 刷新索引
 	 * @return
 	 */
-	@Override
-	public boolean frashIndex() {
+	
+	public boolean frashIndex(String type) {
+		Directory dwriter=type.equals("ansible")?aWrite:pWrite;
 		IndexWriter writer = null;
-		// 初始化写入配置
 		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		iwc.setOpenMode(OpenMode.CREATE);
-		// 创建模式 OpenMode.CREATE_OR_APPEND 添加模式
-		//如果是CREATE ,每次都会重新创建这个索引，清空以前的数据，如果是append 每次都会追加，之前的不删除
-		//在日常的需求索引添加中，一般都是 APPEND 持续添加模式
-		List<Artifact> art = (List<Artifact>) artifactDAO.findAll();
+		List<Artifact> art = (List<Artifact>) artifactDAO.findArtifactByType(type);
 		try {
-			writer = new IndexWriter(dirWrite, iwc);
+			writer = new IndexWriter(dwriter, iwc);
 			for (Artifact artifact : art) {
 				Document doc = new Document();
 				doc.add(new LongField("id", artifact.getId(), Store.YES));
@@ -209,15 +224,45 @@ public class ArtifactServiceImpl implements ArtifactService{
 		return arts;
 	}
 	/**
+	 * 对数据库中获取的分页制品重新排序
+	 * @param ids
+	 * @param arts
+	 * @return
+	 */
+	private List<Artifact> reOrder(List<Long> ids,List<Artifact> arts,Pageable page){
+		int pagenum = page.getPageNumber();
+		int pagesize = page.getPageSize();
+		int start = pagenum * pagesize;
+		int end = start+ pagesize;
+		if(end > arts.size()){
+			start = arts.size()-arts.size()%pagesize;
+			end = arts.size();
+		}
+		Map<Long, Artifact> map = new HashMap<>(arts.size());
+		for (Artifact artifact : arts) {
+			map.put(artifact.getId(), artifact);
+		}
+		arts.clear();
+		for (Long id : ids) {
+			if (map.containsKey(id)) {
+				arts.add(map.get(id));
+			}
+			if (arts.size()>=end) {
+				break;
+			}
+		}
+		return arts.subList(start, end);
+	}
+	/**
 	 * 将检索结果转换为制品的id列表
 	 * @param page
 	 * @param top
 	 * @return
 	 */
-	private List<Long> parsePage(Pageable page,TopDocs top){
+	private List<Long> parsePage(Pageable page,TopDocs top,IndexSearcher isearcher){
 		int pagenum = page.getPageNumber();
 		int pagesize = page.getPageSize();
-		int start = (pagenum-1) * pagesize;
+		int start = pagenum * pagesize;
 		int end = start+ pagesize;
 		if(end > top.totalHits){
 			start = top.totalHits-top.totalHits%pagesize;
@@ -231,6 +276,44 @@ public class ArtifactServiceImpl implements ArtifactService{
 				e.printStackTrace();
 			}
 		}
+		return result;
+	}
+	/**
+	 * 将检索结果转换为制品的id列表
+	 * @param page
+	 * @param top
+	 * @return
+	 */
+	private List<Long> parsePage(TopDocs top,IndexSearcher isearcher){
+		ArrayList<Long> result = new ArrayList<>(top.totalHits);
+		for(int i = 0;i < top.totalHits;i++ ){
+			try {
+				result.add(Long.valueOf(isearcher.doc(top.scoreDocs[i].doc).get("id")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public Page<Artifact> queryCate(String keyword, String cate, Pageable pageable,String type) throws IOException {
+		Query query=null;
+		IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
+		try {
+			query = qp.parse(keyword);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+        System.out.println("Query = " + query);  
+        long start = System.currentTimeMillis();  
+        TopDocs topDocs = isearcher.search(query, Integer.MAX_VALUE);  
+        List<Long> ids = parsePage(topDocs,isearcher);
+        List<Artifact> content = (List<Artifact>) (artifactDAO.findIdsInCategory(cate,ids));
+        content = reOrder(ids, content,pageable);
+        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
+		
+		Page<Artifact> result = new PageImpl<>(content, pageable, content.size());
 		return result;
 	}
 }

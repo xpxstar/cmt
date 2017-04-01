@@ -1,56 +1,35 @@
 var appMain = {
-	statusMap : new Map(),
+	cachedCate : null,
 	init : function() {
-		appMain.initData();
+		appMain.loadCategory();
 		appMain.initControlEvent();
-		$("#app-list-btn").click();
+		$("#art-list-btn").click();
 		calendar();
 	},
-	initData : function() {
-		this.statusMap.put("CREATED", "新建");
-		this.statusMap.put("DEPLOYED", "已部署");
-		this.statusMap.put("MODIFIED", "已修改");
-		this.statusMap.put("新建", "CREATED");
-		this.statusMap.put("已部署", "DEPLOYED");
-		this.statusMap.put("已修改", "MODIFIED");
-
-		this.statusMap.put("RUNNING", "运行");
-		this.statusMap.put("STOPPED", "停止");
-		this.statusMap.put("ERROR", "故障");
-		this.statusMap.put("运行", "RUNNING");
-		this.statusMap.put("故障", "ERROR");
+	loadCategory: function(){
+		ajaxGetJsonAuthc(dURIs.categoryURI,null, appMain.initCacheCate,null);
 	},
-
+	initCacheCate : function(data){
+		appMain.cachedCate = data;
+		/*for(var aa in cachedCate.sub){
+			alert(cachedCate.sub[aa].name);
+		}*/
+	},
 	initControlEvent : function() {
-		$("#app-list-btn").click(function() {
+		$("#art-list-btn").click(function() {
 			appMain.cleanState();
 			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.appList, null);
+			loadPage(dURIs.viewsURI.artList, null);
 		});
-		$("#app-orchestration-btn").click(function() {
+		$("#art-search-btn").click(function() {
 			appMain.cleanState();
 			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.appOrchestration, null);
+			loadPage(dURIs.viewsURI.artSearch, null);
 		});
-		$("#domain-btn").click(function() {
+		$("#art-analyze-btn").click(function(){
 			appMain.cleanState();
 			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.domains, null);
-		});
-		$("#service-list-btn").click(function(){
-			appMain.cleanState();
-			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.serviceList, null);
-		});
-		$("#config-btn").click(function(){
-			appMain.cleanState();
-			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.configManager, null);
-		});
-		$("#tempt-btn").click(function() {
-			appMain.cleanState();
-			$(this).addClass("active");
-			loadPage(dURIs.viewsURI.temptManager, null);
+			loadPage(dURIs.viewsURI.artUpload, null);
 		});
 	},
 	cleanState: function(){

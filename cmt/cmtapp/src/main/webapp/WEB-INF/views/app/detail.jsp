@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>制品管理</title>
+<title>制品详情</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,25 +12,16 @@
 <body>
 	<div id="d-main-content">
 		<div class="intro">
-			<h1>制品管理</h1>
+			<h1>制品详情</h1>
 		</div>
 		
    		<div class="content-board">
 	   		<div id="cate-group" class="col-sm-2">
-	   			<div class="cmt-type">
-	   				<h5>选择工具类型</h5>
-	   			
-					<select id="type-list" name="filter-os">
-						<option value="puppet">Puppet</option>
-						<option value="ansible">Ansible</option>
-					</select>
-				</div>
 				<div id="category-panel-root" class="panel-group" role="tablist"
 						aria-multiselectable="true">
 						</div>
 			</div>
 			<div id="list-group" class="col-sm-8">
-				
 				<ul  id="art-list" class="list modules">
 					
 					</ul>

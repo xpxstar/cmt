@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Cloudeploy</title>
+<title>CMT-System</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="<c:url value='/css/bootstrap/bootstrap.min.css' />"
@@ -54,14 +54,10 @@
 		</div>
 		<div class="sidebar">
 			<ul id="sidebar-list" class="nav nav-list">
-				<li id="app-list-btn"><a><span class="glyphicon glyphicon-list-alt cool-orange"></span><span class="name">Applications</span><span class="title">应用列表</span></a><div class="cool-border"></div></li>
-				<li id="app-orchestration-btn"><a><span class="glyphicon glyphicon-retweet cool-cyan"></span><span class="name">Orchestration</span><span class="title">模型编排</span></a><div class="cool-border"></div></li>
+				<li id="art-list-btn"><a><span class="glyphicon glyphicon-list-alt cool-orange"></span><span class="name">制品管理</span><span class="title">Manager</span></a><div class="cool-border"></div></li>
+				<li id="art-search-btn"><a><span class="glyphicon glyphicon-retweet cool-cyan"></span><span class="name">检索制品</span><span class="title">Search</span></a><div class="cool-border"></div></li>
 				<!-- <li id="domain-btn"><a><span class="glyphicon glyphicon-cloud-upload cool-green"></span><span class="name">Domain</span><span class="title">域名管理</span></a><div class="cool-border"></div></li>
-				 --><li id="service-list-btn"><a><span class="glyphicon glyphicon-cloud cool-blue"></span><span class="name">Services</span><span class="title">服务状态</span></a><div class="cool-border"></div></li>
-				<li id="config-btn"><a><span class="glyphicon glyphicon-cog cool-purple"></span><span class="name">Configure</span><span class="title">配置管理</span></a><div class="cool-border"></div></li>
-				<!-- <li id="config-btn"><a><span class="glyphicon glyphicon-th cool-orange"></span><span class="name">Apptype</span><span class="title">应用类型</span></a><div class="cool-border"></div></li>
-				 --><li id="tempt-btn"><a><span class="glyphicon glyphicon-road cool-blue"></span><span class="name">Templates</span><span class="title">模板管理</span></a><div class="cool-border"></div></li>
-			
+				 --><li id="art-analyze-btn"><a><span class="glyphicon glyphicon-cloud cool-blue"></span><span class="name">制品检测</span><span class="title">Analyzer</span></a><div class="cool-border"></div></li>
 			</ul>
 			<ul class="nav nav-list" style="margin-top:50px">
 			</ul>
