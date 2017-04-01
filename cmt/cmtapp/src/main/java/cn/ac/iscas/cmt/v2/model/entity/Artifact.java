@@ -28,6 +28,7 @@ public class Artifact{
 	@Getter @Setter private Long id;
 	
 	@Getter @Setter private String name;
+	@Getter @Setter private String type;
 	@Getter @Setter private String author;
 	@Getter @Setter private String component;
 	@Getter @Setter private String version;
@@ -36,8 +37,6 @@ public class Artifact{
 	@Getter @Setter private Long vernum;
 	@Getter @Setter private Date lastDate;
 	@Getter @Setter private int score;
-	@Getter @Setter private int standard;
-	@Getter @Setter private int feedback;
 	@Getter @Setter private int alldown;
 	@Getter @Setter private String tags;
 	@Getter @Setter private String category;

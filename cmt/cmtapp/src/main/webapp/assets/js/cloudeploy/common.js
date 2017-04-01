@@ -179,7 +179,7 @@ var getLocalData = function(key) {
 var DHtml = {
 	emptyRow : function(colspan) {
 		return "<tr><td colspan='" + colspan
-				+ "'><span class='text-success'>Empty</span></td></tr>";
+				+ "'><span class='text-success'>No Result</span></td></tr>";
 	}
 };
 

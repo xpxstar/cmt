@@ -54,6 +54,7 @@ public interface ArtifactService {
 	 * @throws IOException 
 	 */
 	public boolean frashIndex() throws IOException;
+
 	/**
 	 * 根据类别查询制品
 	 * @param category
@@ -61,5 +62,23 @@ public interface ArtifactService {
 	 * @return
 	 */
 	Page<Artifact> getArtifactsByCat(String category,Pageable page);
+
+	
+	/**
+	 * 返回特定类别的对象
+	 * @param cate
+	 * @param pageable
+	 * @return
+	 */
+	public Page<Artifact> getArtifactByCategory(String cate, Pageable pageable);
+	/**
+	 * 在指定类别中检索
+	 * @param query
+	 * @param cate
+	 * @param pageable
+	 * @return
+	 * @throws IOException 
+	 */
+	public Page<Artifact> queryCate(String keyword, String cate, Pageable pageable) throws IOException;
 
 }

@@ -1,23 +1,22 @@
 var rootURI = function() {
-	return "/cloudapp";
+	return "/cmt";
 };
 
 var dURIs = {
-	appURI : rootURI() + "/v2/applications",
-	appInstanceURI : rootURI() + "/v2/applications/containers/instances",
-	componentURI : rootURI() + "/v2/components",
-	componentTypeURI : rootURI() + "/v2/components/types",
+	appURI : rootURI() + "/v2/artifact",
+	categoryURI : rootURI() + "/v2/artifact/category",
+	searchURI : rootURI() + "/v2/artifact/query",
+	analyzeURI : rootURI() + "/v2/analyze",
 	domainURI : rootURI() + "/v2/domains",
 	hostURI : rootURI() + "/v2/hosts",
 	customFilesURI : rootURI() + "/v2/resources/files/custom",
 	filesURI : rootURI() + "/v2/files",
 	templateURI : rootURI() + "/v2/templates",
 	viewsURI : {
-		appList : rootURI() + "/v2/views/applications/list",
-		appOrchestration : rootURI() + "/v2/views/applications/panel",
-		domains : rootURI() + "/v2/views/domains",
-		serviceList : rootURI() + "/v2/views/service",
-		temptManager : rootURI() + "/v2/views/templates",
+		artList : rootURI() + "/v2/views/artifact/list",
+		artSearch : rootURI() + "/v2/views/artifact/search",
+		artAnalyze : rootURI() + "/v2/views/artifact/analyze",
+		artUpload : rootURI() + "/v2/views/artifact/upload",
 		configManager: rootURI() + "/v2/views/config"
 	},
 	swfs : rootURI() + "/swf",
