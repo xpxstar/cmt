@@ -44,7 +44,7 @@ public interface ArtifactService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public Page<Artifact> query(String query, Pageable pageable) throws IOException;
+	public Page<Artifact> query(String query, Pageable pageable,String Type) throws IOException;
 	
 	/**
 	 * 强制更新索引
@@ -53,7 +53,7 @@ public interface ArtifactService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public boolean frashIndex() throws IOException;
+	public boolean frashIndex(String type) throws IOException;
 	
 	
 	/**
@@ -62,7 +62,7 @@ public interface ArtifactService {
 	 * @param pageable
 	 * @return
 	 */
-	public Page<Artifact> getArtifactByCategory(String cate, Pageable pageable);
+	public Page<Artifact> getArtifactByCategory(String cate, Pageable pageable,String type);
 	/**
 	 * 在指定类别中检索
 	 * @param query
@@ -71,6 +71,6 @@ public interface ArtifactService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public Page<Artifact> queryCate(String keyword, String cate, Pageable pageable) throws IOException;
+	public Page<Artifact> queryCate(String keyword, String cate, Pageable pageable,String type) throws IOException;
 
 }

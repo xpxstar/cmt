@@ -1,4 +1,4 @@
-package cn.ac.iscas.cmt.v2.controller.application;
+package cn.ac.iscas.cmt.v2.controller;
 
 import java.io.IOException;
 

@@ -42,7 +42,7 @@ import cn.ac.iscas.cmt.v2.model.entity.Artifact;
  *	制品的业务逻辑
  */
 @Service
-public class ArtifactServiceImpl {
+public class ArtifactServiceImpl implements ArtifactService{
 	
 	@Autowired
 	private ArtifactDAO artifactDAO;
@@ -152,7 +152,7 @@ public class ArtifactServiceImpl {
 	 * @return
 	 * @throws IOException
 	 */
-	
+	@Override
 	public Page<Artifact> query(String keyword, Pageable pageable,String type) throws IOException {
         IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
 		Query query=null;
@@ -175,7 +175,7 @@ public class ArtifactServiceImpl {
 		return result;
 		
 	}
-	
+	@Override
 	public Page<Artifact> getArtifactByCategory(String cate, Pageable pageable,String type){
 		return artifactDAO.findByCategory(cate,type,pageable);
 	}
@@ -183,7 +183,7 @@ public class ArtifactServiceImpl {
 	 * 刷新索引
 	 * @return
 	 */
-	
+	@Override
 	public boolean frashIndex(String type) {
 		Directory dwriter=type.equals("ansible")?aWrite:pWrite;
 		IndexWriter writer = null;

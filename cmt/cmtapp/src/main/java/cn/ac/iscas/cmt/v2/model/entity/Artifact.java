@@ -41,6 +41,7 @@ public class Artifact{
 	@Getter @Setter private String tags;
 	@Getter @Setter private String category;
 	@Getter @Setter private String github;
+	@Getter @Setter private String md5;
 //	@Getter @Setter private List<Dependency> dependencies;
 //	@Getter @Setter private List<Dependency> os_support;
 //	@Getter @Setter private List<Dependency> requirements;
