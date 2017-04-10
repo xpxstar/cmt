@@ -19,6 +19,7 @@
 	type="text/css" rel="stylesheet">
 <link href="<c:url value='/css/cloudeploy/app-panel.css' />"
 	type="text/css" rel="stylesheet">
+	<link href="/cmt_app/css/cloudeploy/app-detail.css" type="text/css" rel="stylesheet">
 	<link href="<c:url value='/css/cloudeploy/template.css' />" type="text/css" rel="stylesheet">
 	<link href="<c:url value='/css/uploadify/uploadify.css' />" type="text/css" rel="stylesheet">
 	<link href="<c:url value='/css/new/style.css'/>" type="text/css"  rel="stylesheet"/>

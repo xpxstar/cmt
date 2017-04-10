@@ -73,11 +73,8 @@ var appList = {
 	},
 	loadDetail : function(id){
 		var url = dURIs.appURI+'/'+id;
-		ajaxGetJsonAuthc(url, null, appList.requestDetailCallback,
+		ajaxGetJsonAuthc(url, null, appDetail.init,
 				null);
-	},
-	requestDetailCallback : function(data) {
-		var arts = data;
 	},
 	loadPaging: function(cur,total,size){
 		var showPage=cur+1;

@@ -39,7 +39,7 @@ public class ArtifactController {
 		return ViewParser.parseJSONString(StaticCategory.root);
 	}
 	/**
-	 * 获取制品分页列表
+	 * 获取指定制品
 	 * 
 	 * @return
 	 */
@@ -69,11 +69,7 @@ public class ArtifactController {
 	}
 	
 	/**
-<<<<<<< HEAD
-	 * 查询应用列表
-=======
 	 * 获取制品检索的分页列表
->>>>>>> branch 'master' of https://github.com/xpxstar/cmt
 	 * 
 	 * @return
 	 * @throws IOException 
@@ -93,11 +89,8 @@ public class ArtifactController {
 	}
 	
 	/**
-<<<<<<< HEAD
-	 * 更新索引
-=======
+
 	 * 获取在分类中制品检索的分页列表
->>>>>>> branch 'master' of https://github.com/xpxstar/cmt
 	 * 
 	 * @return
 	 * @throws IOException 

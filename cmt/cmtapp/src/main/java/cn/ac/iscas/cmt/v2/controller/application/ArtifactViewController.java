@@ -33,4 +33,8 @@ public class ArtifactViewController {
 	public String uploadPage() {
 		return "app/upload";
 	}
+	@RequestMapping(value = { "/detail" }, method = RequestMethod.GET)
+	public String detailPage() {
+		return "app/detail";
+	}
 }

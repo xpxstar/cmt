@@ -1,0 +1,37 @@
+.comma-separated li,.comma-separated{
+	display: inline; 
+	padding-left: 0px;
+  }
+ .module-info-header,.module-info-type,.download-info,.basic-content-left,.module-info-git{
+	display: inline-block; 
+ }
+ .module-info-type,.module-info-git{
+ 	margin-left:20px;
+ }
+ .main-content{
+	margin-left:3%;
+	margin-top:30px;
+	margin-right:3%;
+	padding-left:2%;
+	padding-top:0px;
+	padding-bottom:20px;
+	padding-right:2%;
+	background:#EEE9E9;
+	width:94%;
+	font-size:15px;
+ }
+.download-info{
+	margin-left:2%;
+}
+.basic-content-left{
+	width:60%;
+}
+
+ .module-info-cat,.module-info-addition,.module-info-tags,.download-counts,.install-help{
+	margin:15px 0;
+}
+
+.module-release-info{
+	margin-left:3.5%;
+	margin-top:20px;
+}

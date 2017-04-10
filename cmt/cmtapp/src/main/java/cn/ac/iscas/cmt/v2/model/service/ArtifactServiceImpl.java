@@ -80,10 +80,10 @@ public class ArtifactServiceImpl {
 		analyzer = new StandardAnalyzer();
 		aWrite = FSDirectory.open(add.toPath());
 		pWrite = FSDirectory.open(pdd.toPath());
-		if (!add.exists() || !pdd.exists()) {
+//		if (!add.exists() || !pdd.exists()) {
 			frashIndex("ansible");
 			frashIndex("puppet");
-		}
+//		}
 		areader = DirectoryReader.open(aWrite);  
 		preader = DirectoryReader.open(pWrite);  
 		aSearcher = new IndexSearcher(areader);  
