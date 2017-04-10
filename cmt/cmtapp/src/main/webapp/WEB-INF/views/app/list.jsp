@@ -43,6 +43,7 @@
 			</div>
 		</div>
 		<script src="<c:url value='/js/cloudeploy/app/app-list.js' />"></script>
+		<script src="<c:url value='/js/cloudeploy/app/app-detail.js' />"></script>
 	</div>
 </body>
 </html>

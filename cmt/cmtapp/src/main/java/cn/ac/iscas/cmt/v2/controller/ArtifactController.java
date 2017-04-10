@@ -39,7 +39,7 @@ public class ArtifactController {
 		return ViewParser.parseJSONString(StaticCategory.root);
 	}
 	/**
-	 * 获取制品分页列表
+	 * 获取指定制品
 	 * 
 	 * @return
 	 */

@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import cn.ac.iscas.cmt.v2.model.entity.Artifact;
+
 public interface ArtifactDAO extends PagingAndSortingRepository<Artifact, Long> {
 	@Query(value="select art from Artifact art where art.category like %:cate% AND art.type = :type order by art.alldown desc")
 	Page<Artifact> findByCategory(@Param("cate")String cate,@Param("type")String type, Pageable pageable);
