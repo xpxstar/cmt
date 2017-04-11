@@ -18,6 +18,10 @@
 	        </div>
          	<div class="module-info-type">by: <a href="/puppet" id="detail-type">Puppet</a></div>
          	<div class="module-info-git" id="detail-git"><a href="/puppet">项目链接</a></div>
+         	<div class="module-info-edit" id="detail-edit">
+	         	<i class="fa fa-edit"></i> 
+	         	<a href="/">编辑</a>
+         	</div>
          	<br>
 	        <div class="basic-content-left">
 		       <div class="module-info-cat">
@@ -53,7 +57,7 @@
 		         </div>
 		-->
 		      <div class="module-info-tags">
-		            <span>Tags:</span>
+		            <span>标签 :</span>
 		            <ul class="comma-separated tags" id="detail-tags">
 		                <li><a href="/tags/puppet" title="Tagged &quot;puppet&quot;">puppet</a></li>
 		                <li><a href="/tags/puppetdb" title="Tagged &quot;puppetdb&quot;">puppetdb</a></li>
@@ -64,24 +68,7 @@
 	
 	   	
 			<div class="download-info clearfix">
-			<!-- 
-		        <div class="installation ">
-		          <div class="puppetfile-option clearfix">
-		            <p>To use this module, add this declaration to your Puppetfile:</p>
-		            <input type="text" class="paste-code" value="mod 'rikih-simple_jail_user', '0.2.0'" readonly="readonly" onclick="this.select()"/>
-		          </div>
 		
-		          <div class="install-help clearfix">
-		            <small class="install-help"><a href="https://docs.puppet.com/pe/latest/cmgmt_managing_code.html">Learn more about managing modules with a Puppetfile</a></small>
-		            <small class="download-link"><a href="/v3/files/rikih-simple_jail_user-0.2.0.tar.gz">download latest tar.gz</a></small>
-		          </div>
-		
-		          <div class="pmt-option clearfix">
-		            <p>To manually install this module with puppet module tool:</p>
-		            <input type="text" class="paste-code" value="puppet module install rikih-simple_jail_user --version 0.2.0" readonly="readonly" onclick="this.select()"/>
-		          </div>
-		        </div>
-		 -->
 		          <div class="download-counts" id="detail-download-num">
 		            <i class="fa fa-download"></i> 4,653<br>
 		            <small>Latest version: 4,568</small>
@@ -127,6 +114,7 @@
 			</div>
 			-->
 		<script src="<c:url value='/js/cloudeploy/app/app-detail.js' />"></script>
+		<script src="<c:url value='/js/cloudeploy/app/app-edit.js' />"></script>
 	</div>
 </body>
 </html>

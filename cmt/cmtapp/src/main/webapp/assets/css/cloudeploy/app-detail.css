@@ -2,8 +2,12 @@
 	display: inline; 
 	padding-left: 0px;
   }
- .module-info-header,.module-info-type,.download-info,.basic-content-left,.module-info-git{
+ .module-info-header,.module-info-type,.download-info,.basic-content-left,.module-info-git,.module-info-edit{
 	display: inline-block; 
+ }
+ .module-info-edit{
+ 	float:right;
+ 	margin-top:30px;
  }
  .module-info-type,.module-info-git{
  	margin-left:20px;

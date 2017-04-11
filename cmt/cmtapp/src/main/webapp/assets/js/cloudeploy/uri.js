@@ -1,5 +1,5 @@
 var rootURI = function() {
-	return "/cmt_app";
+	return "/cmt";
 };
 
 var dURIs = {

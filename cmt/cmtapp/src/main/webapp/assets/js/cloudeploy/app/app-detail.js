@@ -21,6 +21,9 @@ var appDetail = {
 		} 
 		$("#detail-cat").html(html);
 		
+		html = "<i class='fa fa-edit'></i><a href='javascript:void(0)' onclick='appDetail.loadEdit()'>编辑</a>";
+		$("#detail-edit").html(html);
+		
 		html = '';
 		strs=arts.tags.split("/"); 
 		for (i=0;i<strs.length ;i++){ 
@@ -37,8 +40,8 @@ var appDetail = {
 		$("#detail-download-file").html(html);
 		
 		html = "<div id='module-release-title'>版本： <strong>";
-		html += arts.version +"</strong> 上传日期： <strong>" + arts.lastDate 
-				+ "</strong></div>评分: <strong>"+ arts.score+"</strong>";
+		html += arts.version +"</strong>  上传日期： <strong>" + arts.lastDate 
+				+ "</strong></div>评分：<strong>"+ arts.score+"</strong>";
 		$("#detail-info").html(html);
 		
 		
@@ -47,4 +50,7 @@ var appDetail = {
 	loadCat : function(data){
 		loadPage(dURIs.viewsURI.artList, appList.loadList("/"+name+"/",6,1));
 	},
+	loadEdit : function(){
+		appEdit.init(arts);
+	}
 };
