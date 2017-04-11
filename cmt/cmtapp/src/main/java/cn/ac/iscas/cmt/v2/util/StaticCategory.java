@@ -102,7 +102,7 @@ public class StaticCategory {
 		
 		Category development = new Category("/development/");
 		development.addSub(delivery,testing);
-		development.fillSub("/development/versioncontrol/");
+		development.fillSub("/development/version-control/");
 		
 		Category database = new Category("/database/");
 		database.addSub(sql,nosql);

@@ -2,6 +2,7 @@ package cn.ac.iscas.cmt.v2.service.test;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,23 @@ public class ArtifactServiceTest {
 	 * @throws IOException
 	 */
 	@Test
-//	@Ignore
+	@Ignore
 	public void queryTest() throws IOException {
 		Pageable page = new PageRequest(1, 5);
-		Page<Artifact> arts =  artifactService.query("php redis", page);
+		Page<Artifact> arts =  artifactService.query("php redis", page,"ansible");
 		System.out.println(arts.getTotalElements());
 		System.out.println(arts.getNumber());
 		System.out.println(arts.getSize());
 		for (Artifact artifact : arts) {
 			System.out.print(artifact.getId()+"\t");
 		}
+	}
+	
+	@Test
+//	@Ignore
+	public void flashIndex() throws IOException {
+		artifactService.frashIndex("ansible");
+		artifactService.frashIndex("puppet");
 	}
 
 }

@@ -18,6 +18,7 @@
 	        </div>
          	<div class="module-info-type">by: <a href="/puppet" id="detail-type">Puppet</a></div>
          	<div class="module-info-git" id="detail-git"><a href="/puppet">项目链接</a></div>
+
          	<div class="module-info-edit" id="detail-edit">
 	         	<i class="fa fa-edit"></i> 
 	         	<a href="/">编辑</a>
@@ -69,6 +70,7 @@
 	   	
 			<div class="download-info clearfix">
 		
+
 		          <div class="download-counts" id="detail-download-num">
 		            <i class="fa fa-download"></i> 4,653<br>
 		            <small>Latest version: 4,568</small>
@@ -115,6 +117,7 @@
 			-->
 		<script src="<c:url value='/js/cloudeploy/app/app-detail.js' />"></script>
 		<script src="<c:url value='/js/cloudeploy/app/app-edit.js' />"></script>
+
 	</div>
 </body>
 </html>
