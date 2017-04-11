@@ -128,7 +128,7 @@ public class ArtifactController {
 		return ViewParser.parseJSONString(art);
 	}
 	/**
-	 * 索引刷新
+	 * 更新索引
 	 * 
 	 * @return
 	 * @throws IOException 

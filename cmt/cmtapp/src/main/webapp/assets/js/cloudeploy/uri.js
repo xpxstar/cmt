@@ -17,7 +17,8 @@ var dURIs = {
 		artSearch : rootURI() + "/v2/views/artifact/search",
 		artAnalyze : rootURI() + "/v2/views/artifact/analyze",
 		artUpload : rootURI() + "/v2/views/artifact/upload",
-		configManager: rootURI() + "/v2/views/config"
+		configManager: rootURI() + "/v2/views/config",
+		artDetail : rootURI() + "/v2/views/artifact/detail"
 	},
 	swfs : rootURI() + "/swf",
 };
