@@ -35,7 +35,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import cn.ac.iscas.cmt.v2.model.dao.ArtifactDAO;
+import cn.ac.iscas.cmt.v2.model.dao.SynonymsDao;
 import cn.ac.iscas.cmt.v2.model.entity.Artifact;
+import cn.ac.iscas.cmt.v2.model.entity.Synonyms;
 
 /**
  * @author xpxstar@gmail.com
@@ -46,6 +48,8 @@ public class ArtifactServiceImpl implements ArtifactService{
 	
 	@Autowired
 	private ArtifactDAO artifactDAO;
+	@Autowired
+	private SynonymsDao synonymsDao;
 	static public String Directory = "";
 	//索引文件
 	Directory aWrite = null;
@@ -154,6 +158,8 @@ public class ArtifactServiceImpl implements ArtifactService{
 	 */
 	@Override
 	public Page<Artifact> query(String keyword, Pageable pageable,String type) throws IOException {
+		keyword = querySynonyms(keyword);//查询同义词
+		
         IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
 		Query query=null;
 		try {
@@ -301,6 +307,8 @@ public class ArtifactServiceImpl implements ArtifactService{
 	}
 	
 	public Page<Artifact> queryCate(String keyword, String cate, Pageable pageable,String type) throws IOException {
+		keyword = querySynonyms(keyword);//查询同义词
+		
 		Query query=null;
 		IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
 		try {
@@ -319,5 +327,28 @@ public class ArtifactServiceImpl implements ArtifactService{
 		
 		Page<Artifact> result = new PageImpl<>(content, pageable, content.size());
 		return result;
+	}
+	
+	public String querySynonyms(String keyword) {
+		String[] strs = keyword.split(" ");//查询出每个单词同义词
+		for(int i=0;i<strs.length;i++){
+			Synonyms synonym = synonymsDao.findBySynonyms(strs[i]);
+			List<Synonyms> synonyms = null;
+			if(synonym!=null){//该词形式不标准
+				synonyms = synonymsDao.findByName(synonym.getName());
+				keyword += " " + synonym.getName();//加上原型词
+			}else {//是原型词或者无该词
+				synonyms = synonymsDao.findByName(strs[i]);
+			}
+			if(synonyms.size()>0){
+				for(int j = 0 ; j<synonyms.size(); j++){
+					if(!synonyms.get(j).getSynonyms().equals(strs[i]))
+						keyword += " " + synonyms.get(j).getSynonyms();
+				}
+					
+			}
+		}
+		System.out.println(keyword);
+		return keyword;
 	}
 }
