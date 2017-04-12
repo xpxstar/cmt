@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.ac.iscas.cmt.v2.model.entity.Artifact;
-import cn.ac.iscas.cmt.v2.model.service.ArtifactService;
 import cn.ac.iscas.cmt.v2.model.service.ArtifactServiceImpl;
 import cn.ac.iscas.cmt.v2.util.StaticCategory;
 import cn.ac.iscas.cmt.v2.util.ViewParser;

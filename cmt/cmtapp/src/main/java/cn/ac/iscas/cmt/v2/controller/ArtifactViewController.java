@@ -37,4 +37,8 @@ public class ArtifactViewController {
 	public String detailPage() {
 		return "app/detail";
 	}
+	@RequestMapping(value = { "/edit" }, method = RequestMethod.GET)
+	public String editPage() {
+		return "app/edit";
+	}
 }

@@ -26,18 +26,18 @@
 				</div>
 		
 		         <div class="module-info-addition" >
-		          简介：<span id="edit-addtion"> Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.</span>
+		          简介：<br><br>
+		          <textarea rows='3' cols='40' name='addition' id="edit-addtion" style="width: 800px; height: 100px;"></textarea>
 		         </div>
 		
 		
 		      <div class="module-info-tags">
 		            <span>标签 :</span>
-		            <ul class="comma-separated tags" id="edit-tags">
-		                <li><a href="/tags/puppet" title="Tagged &quot;puppet&quot;">puppet</a></li>
-		                <li><a href="/tags/puppetdb" title="Tagged &quot;puppetdb&quot;">puppetdb</a></li>
-		                <li><a href="/tags/storeconfig" title="Tagged &quot;storeconfig&quot;">storeconfig</a></li>
-		            </ul>
+		            <span class="comma-separated tags" id="edit-tags"></span>
 	          	</div>
+	          	(注：标签用逗号分隔)
+	          	<br><br><br>
+	          	<input type="button" value="保存" class="module-info-save" onclick="appEdit.saveEdit()"/>
 			</div> 
 	
 	   	
