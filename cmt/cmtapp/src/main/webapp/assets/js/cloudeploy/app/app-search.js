@@ -15,7 +15,7 @@ var appSearch = {
 			}else{
 				var os = $("#os-filter").val();
 				if(os!=''){
-					query+=" "+os
+					query+=" "+os;
 				}
 				appSearch.requestQueryList(query);
 			}
@@ -25,7 +25,9 @@ var appSearch = {
 	requestQueryList : function(query) {
 		appSearch.curQuery = query;
 		appSearch.curType=$("#cmt-filter").val();
-		ajaxGetJsonAuthc(dURIs.searchURI+"/6/1?query="+query+'&type='+appSearch.curType, null, appSearch.requestQueryListCallback,
+		query = query.replace(/\+\+/g, "pp");
+		query = query.replace(/#/g, "_sharp");
+		ajaxGetJsonAuthc(dURIs.searchURI+"/6/1?query="+query+"&type="+appSearch.curType, null, appSearch.requestQueryListCallback,
 				null);
 	},
 

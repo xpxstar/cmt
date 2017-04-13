@@ -163,7 +163,6 @@ public class ArtifactServiceImpl implements ArtifactService{
 	@Override
 	public Page<Artifact> query(String keyword, Pageable pageable,String type) throws IOException {
 		keyword = querySynonyms(keyword);//查询同义词
-		
         IndexSearcher isearcher = type.equals("ansible")?aSearcher:pSearcher;
 		Query query=null;
 		try {
@@ -212,7 +211,8 @@ public class ArtifactServiceImpl implements ArtifactService{
 			for (Artifact artifact : art) {
 				Document doc = new Document();
 				doc.add(new LongField("id", artifact.getId(), Store.YES));
-				doc.add(new TextField("doc",artifact.toDocument(),Store.YES));
+				String document = artifact.toDocument().toLowerCase().replaceAll("c++", "cpp").replaceAll("c#", "c_sharp");
+				doc.add(new TextField("doc",document,Store.YES)); //替换C++ C#之类的词汇
 				
 //				doc.add(new StoredField("version", artifact.getVersion()));
 //				doc.add(new StoredField("alldown", artifact.getAlldown()));
@@ -364,7 +364,6 @@ public class ArtifactServiceImpl implements ArtifactService{
 					
 			}
 		}
-		System.out.println(keyword);
 		return keyword;
 	}
 }
