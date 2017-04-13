@@ -350,7 +350,7 @@ public class ArtifactServiceImpl implements ArtifactService{
 		for(int i=0;i<strs.length;i++){
 			List<Synonyms> synonym = synonymsDao.findBySynonyms(strs[i]);
 			List<Synonyms> synonyms = null;
-			if(synonym!=null){//该词形式不标准
+			if(synonym.size()>0){//该词形式不标准
 				synonyms = synonymsDao.findByName(synonym.get(0).getName());
 				keyword += " " + synonym.get(0).getName();//加上原型词
 			}else {//是原型词或者无该词
