@@ -348,11 +348,11 @@ public class ArtifactServiceImpl implements ArtifactService{
 	public String querySynonyms(String keyword) {
 		String[] strs = keyword.split(" ");//查询出每个单词同义词
 		for(int i=0;i<strs.length;i++){
-			Synonyms synonym = synonymsDao.findBySynonyms(strs[i]);
+			List<Synonyms> synonym = synonymsDao.findBySynonyms(strs[i]);
 			List<Synonyms> synonyms = null;
 			if(synonym!=null){//该词形式不标准
-				synonyms = synonymsDao.findByName(synonym.getName());
-				keyword += " " + synonym.getName();//加上原型词
+				synonyms = synonymsDao.findByName(synonym.get(0).getName());
+				keyword += " " + synonym.get(0).getName();//加上原型词
 			}else {//是原型词或者无该词
 				synonyms = synonymsDao.findByName(strs[i]);
 			}

@@ -10,5 +10,5 @@ public interface SynonymsDao extends PagingAndSortingRepository<Synonyms, Long> 
 
 	List<Synonyms> findByName(String name);
 	
-	Synonyms findBySynonyms(String synonyms);
+	List<Synonyms> findBySynonyms(String synonyms);
 }
