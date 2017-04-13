@@ -13,8 +13,11 @@ import javax.persistence.PostRemove;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongField;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -25,6 +28,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -172,6 +176,13 @@ public class ArtifactServiceImpl implements ArtifactService{
         long start = System.currentTimeMillis();
         TopDocs topDocs = null;
         topDocs = isearcher.search(query, Integer.MAX_VALUE);  
+        
+//        ScoreDoc[] hits = topDocs.scoreDocs;
+//        for(int i = 0;i<hits.length;i++){
+//        	Document hitDoc = isearcher.doc(hits[i].doc);
+//        	hitDoc.get("version");
+//        }
+//        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
         List<Long> ids = parsePage(pageable, topDocs,isearcher);
         List<Artifact> content = (List<Artifact>) (artifactDAO.findAll(ids));
         content = reOrder(ids, content);
@@ -202,6 +213,11 @@ public class ArtifactServiceImpl implements ArtifactService{
 				Document doc = new Document();
 				doc.add(new LongField("id", artifact.getId(), Store.YES));
 				doc.add(new TextField("doc",artifact.toDocument(),Store.YES));
+				
+//				doc.add(new StoredField("version", artifact.getVersion()));
+//				doc.add(new StoredField("alldown", artifact.getAlldown()));
+//				doc.add(new StoredField("download", artifact.getDownload()));
+//				doc.add(new StoredField("lastDate", artifact.getLastDate().toString()));
 				writer.addDocument(doc);
 			}
 			writer.commit(); 
