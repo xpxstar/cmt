@@ -176,16 +176,16 @@ public class ArtifactServiceImpl implements ArtifactService{
         TopDocs topDocs = null;
         topDocs = isearcher.search(query, Integer.MAX_VALUE);  
         
-//        ScoreDoc[] hits = topDocs.scoreDocs;
-//        for(int i = 0;i<hits.length;i++){
-//        	Document hitDoc = isearcher.doc(hits[i].doc);
-//        	hitDoc.get("version");
-//        }
-//        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
+        ScoreDoc[] hits = topDocs.scoreDocs;
+        for(int i = 0;i<hits.length;i++){
+        	Document hitDoc = isearcher.doc(hits[i].doc);
+        	hitDoc.get("version");
+        }
+        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
         List<Long> ids = parsePage(pageable, topDocs,isearcher);
         List<Artifact> content = (List<Artifact>) (artifactDAO.findAll(ids));
         content = reOrder(ids, content);
-        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
+//        System.out.println("Spend time:"+(System.currentTimeMillis() - start) + " ms");  
 		
 		Page<Artifact> result = new PageImpl<>(content, pageable, topDocs.totalHits);
 		return result;
@@ -211,13 +211,12 @@ public class ArtifactServiceImpl implements ArtifactService{
 			for (Artifact artifact : art) {
 				Document doc = new Document();
 				doc.add(new LongField("id", artifact.getId(), Store.YES));
-				String document = artifact.toDocument().toLowerCase().replaceAll("c++", "cpp").replaceAll("c#", "c_sharp");
+				String document = artifact.toDocument().toLowerCase().replaceAll("c#", "c_sharp").replaceAll("c\\+\\+", "cpp");
 				doc.add(new TextField("doc",document,Store.YES)); //替换C++ C#之类的词汇
-				
-//				doc.add(new StoredField("version", artifact.getVersion()));
-//				doc.add(new StoredField("alldown", artifact.getAlldown()));
-//				doc.add(new StoredField("download", artifact.getDownload()));
-//				doc.add(new StoredField("lastDate", artifact.getLastDate().toString()));
+				doc.add(new StoredField("version", artifact.getVersion()));
+				doc.add(new StoredField("alldown", artifact.getAlldown()));
+				doc.add(new StoredField("download", artifact.getDownload()));
+				doc.add(new StoredField("lastDate", artifact.getLastDate().toString()));
 				writer.addDocument(doc);
 			}
 			writer.commit(); 
