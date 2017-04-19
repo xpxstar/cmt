@@ -25,8 +25,7 @@
 						<option value="ansible">Ansible</option>
 					</select>
 				</div>
-				<div id="category-panel-root" class="panel-group" role="tablist"
-						aria-multiselectable="true">
+				<div id="category-panel-root" class="panel-group" role="tablist">
 						</div>
 			</div>
 			<div id="list-group" class="col-sm-8">

@@ -35,6 +35,7 @@
 	<script src="<c:url value='/js/cloudeploy/uri.js' />"></script>
 	<script src="<c:url value='/js/cloudeploy/map.js' />"></script>
 	<script src="<c:url value='/js/cloudeploy/common.js' />"></script>
+	<script src="<c:url value='/js/cloudeploy/app/app-list.js' />"></script>
 	<script src="<c:url value='/js/cloudeploy/app/app-main.js' />"></script>
 	<div class="d-main">
 		<div class="navigation">

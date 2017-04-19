@@ -132,6 +132,7 @@ var defaultAjaxOptions = function(requestUrl, type, headers, dataObj,
 	if (!verifyParam(requestUrl)) {
 		throw "invalid parameter";
 	}
+	options.async=false;
 	options.url = requestUrl;
 	options.type = verifyParam(type) ? type : "GET";
 	options.headers = verifyParam(headers) ? headers : {};
