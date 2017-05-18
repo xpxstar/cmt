@@ -3,12 +3,14 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-@Ignore
 public class PuppetParserTest {
 	PuppetParser parser;
 	String rubyEnvironment;
@@ -16,8 +18,8 @@ public class PuppetParserTest {
 	String PuppetAnalyseRuby;
 	@Before
 	public void initPuppetParser(){
-		parser=new PuppetParser("D:/tmp/consul_template","consul_template");
-//		parser=new PuppetParser("D:/tmp/redis","redis");
+//		parser=new PuppetParser("D:/tmp/consul_template","consul_template");
+		parser=new PuppetParser("F:/puppet/redis","redis");
 //		parser=new PuppetParser("D:/tmp/nginx","nginx");
 //		parser=new PuppetParser("D:/tmp/mysql","mysql");
 //		parser=new PuppetParser("D:/tmp/java","java");
@@ -71,6 +73,7 @@ public class PuppetParserTest {
 		System.out.println(value);
 	}
 	@Test
+	@Ignore
 	public void testParser(){
 		parser.parser(rubyEnvironment,PuppetParserSource,PuppetAnalyseRuby);
 	}
@@ -86,8 +89,7 @@ public class PuppetParserTest {
 		}
 	}
 	@Test
-	@Ignore
 	public void testPreProcess() {
-		fail("Not yet implemented");
+		
 	}
 }

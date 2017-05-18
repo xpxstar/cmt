@@ -1,13 +1,88 @@
 var appAnalyze = {
+	lintReportData:null,
+	checkReportData:null,
 	init : function() {
 		$("#deploy-state").hide();
-		$("#tar-upload").click(function() {
+		$('#upload-btn').click(function() {
 			appMain.cleanState();
-			$("#art-analyze-btn").addClass("active");
 			appAnalyze.showShade();
-			setTimeout("loadPage(dURIs.viewsURI.artAnalyze, null);",3000);
+			$("#art-analyze-btn").addClass("active");
 			
+			$('#file-upload').uploadify('upload');
 		});
+		appAnalyze.initUploadify(appAnalyze.uploadedFile);
+	},
+	initUploadify : function(uploadCallBack) {
+		var uploadifyOptions = {
+			'auto' : false,
+			'multi' : false,
+			'uploadLimit' : 1,
+			'buttonText' : '请选择制品',
+			'swf' : dURIs.swfs + '/uploadify.swf',
+			'uploader' : dURIs.filesURI+'analyze/puppet',
+			'fileObjName' : 'file',
+			'fileTypeExts' :'*.zip',
+			 'queueID'  : 'some_file_queue',
+			'formData' : {
+			},
+			'onUploadSuccess' : function(file, data, response) {
+				data = $.parseJSON(data);
+				 var swfu = $('#file-upload').data('uploadify');
+			        var stats = swfu.getStats();
+			        stats.successful_uploads=0;
+			        swfu.setStats(stats);
+			        $("input[name='name']").val('');
+				if (verifyParam(uploadCallBack)) {
+					uploadCallBack(data);
+				}
+			},
+			'onSelect' : function(file) {
+//				if ($("input[name='name']").attr("disabled") == "disabled") {
+//					return;
+//				}
+				$("input[name='name']").val(file.name);
+				$('#upload-btn').removeClass("disabled");
+			}
+		};
+		$('#file-upload').uploadify(uploadifyOptions);
+	},
+	
+	uploadedFile:function(data){
+		$("#deploy-state").hide();
+		$('#upload-btn').addClass("disabled")
+		$("#analyze-result").removeClass('hidden');
+		var fileshtml = '';
+		appAnalyze.lintReportData = data.lint;
+		appAnalyze.checkReportData = data.check;
+		alert(data.lint)
+		alert(data.check)
+		for(var p in appAnalyze.checkReportData){
+			fileshtml+='<li><a href="#" onclick="appAnalyze.loadReport(this,\''+p+'\')">'+p+'</a>';
+		}
+		$('#file-list').html(fileshtml);
+		var first = $('#file-list a').first();
+//		first.addClass('active');
+//		alert(first.html());
+		appAnalyze.loadReport(first,first.text());
+		
+	},
+	loadReport: function(node,key){
+		$('#file-list a').each(function(){
+			$(this).removeClass('active');
+		});
+		$(node).addClass('active');
+		var lreport='';
+		var llist = appAnalyze.lintReportData[key];
+		for(var p in llist){
+			lreport+='<li>'+llist[p]+'</li>';
+		}
+		$("#puppet-lint ul").html(lreport);
+		var report='';
+		var list = appAnalyze.checkReportData[key];
+		for(var p in list){
+			report+='<li>'+compose(list[p])+'</li>';
+		}
+		$("#extend-check ul").html(report);
 	},
 	showShade : function(){
 		var maskHtml = '<div id="deploy-state" style="display: none;">'
@@ -22,6 +97,10 @@ var appAnalyze = {
 	$("#deploy-state").show();
 	}
 };
+function compose(smell){
+	var re = smell['level']+': In '+smell['syntax']+' of '+smell['position']+' '+smell['msg']+' with attribute '+smell['attribute']+' at line '+smell['line']; 
+	return re;
+}
 $(document).ready(function() {
 	appAnalyze.init();
 });

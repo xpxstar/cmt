@@ -5,7 +5,7 @@ import java.util.List;
 public class ASTResourceReference extends ASTBase{
 	private String type;
 	private ASTASTArray title;
-	private List<Object> children;
+	private List<ASTBase> children;
 	public String getType() {
 		return type;
 	}
@@ -18,10 +18,24 @@ public class ASTResourceReference extends ASTBase{
 	public void setTitle(ASTASTArray title) {
 		this.title = title;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
+	}
+	/**change reference to string
+	 * @param array
+	 * @return
+	 */
+	@Override
+	public String changeString(){
+		StringBuffer sb = new StringBuffer();
+		sb.append(this.type);
+		for (ASTBase item : this.getTitle().getChildren()) {
+			sb.append(" ");
+			sb.append(item.changeString());
+		}
+		return sb.toString();
 	}
 }

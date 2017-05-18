@@ -74,7 +74,7 @@ var appSearch = {
 				null);
 	},
 	loadPageList : function(page){
-		var url = dURIs.searchURI+'/'+appSearch.curPagesize+'/'+page+'?query='+appSearch.curQuery+'&type='+appList.curType;
+		var url = dURIs.searchURI+'/'+appSearch.curPagesize+'/'+page+'?query='+appSearch.curQuery+'&type='+appSearch.curType;
 		ajaxGetJsonAuthc(url, null, appSearch.requestQueryListCallback,
 				null);
 	},

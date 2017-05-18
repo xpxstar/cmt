@@ -1,11 +1,15 @@
 package cn.ac.iscas.cmt.v2.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +26,24 @@ import com.google.common.net.HttpHeaders;
 import cn.ac.iscas.cmt.v2.controller.BasicController.DResponseBuilder;
 import cn.ac.iscas.cmt.v2.model.dao.io.MultipartFileByteSource;
 import cn.ac.iscas.cmt.v2.model.dao.io.ResponseByteSink;
+import cn.ac.iscas.cmt.v2.model.service.AnalyzeServiceImpl;
 import cn.ac.iscas.cmt.v2.model.service.FileService;
 import cn.ac.iscas.cmt.v2.util.RandomUtils;
-
+import cn.ac.iscas.cmt.v2.util.ViewParser;
+import cn.ac.iscas.cloudeploy.v2.model.util.Analyzer;
+import cn.ac.iscas.cloudeploy.v2.puppet.compare.ast.entity.Smell;
 @Controller
 @Transactional
-@RequestMapping(value = "v2/files")
+@RequestMapping(value =  "v2/files")
 public class FileController {
 	@Autowired
 	private FileService fileService;
-
-
+	private Analyzer analyzer;
+	
+	public FileController() {
+		analyzer = new Analyzer();
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadFile(@RequestParam("file") MultipartFile file)
@@ -53,6 +64,32 @@ public class FileController {
 	 * @author xpxstar@gmail.com
 	 * 2015年11月13日 下午3:38:45
 	 */
+	@RequestMapping(value = { "analyze/puppet" }, method = RequestMethod.POST)
+	@ResponseBody
+	public String analyzePuppetFile(@RequestParam("file") MultipartFile file)
+			throws IOException {
+		String name = file.getOriginalFilename();
+		name = name.substring(0, name.lastIndexOf("."));
+		System.out.println(name);
+		fileService.savePuppetModule(new MultipartFileByteSource(file));
+		Map<String, List<Smell>> re = analyzer.check(name);
+		Map<String, List<String>> rLint = analyzer.puppetLintCheck(name);
+		String check = ViewParser.parseJSONString(re,rLint);
+//		String lint = ViewParser.parseStringJSONString(rLint);
+//		JSONObject ret = new JSONObject();
+//		ret.put("check", check);
+//		ret.put("lint", lint);
+//		System.out.println(ret.toString());
+		return check;
+	}
+	/**
+	 * @description upload puppet modules zipfile
+	 * @param file
+	 * @return file Md5-key
+	 * @throws IOException Object
+	 * @author xpxstar@gmail.com
+	 * 2015年11月13日 下午3:38:45
+	 */
 	@RequestMapping(value = { "upload/puppet" }, method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadPuppetFile(@RequestParam("file") MultipartFile file)
@@ -63,7 +100,6 @@ public class FileController {
 						fileService.savePuppetFile(new MultipartFileByteSource(file)))
 				.build();
 	}
-
 /*	@RequestMapping(value = { "/{fileKey}" }, method = RequestMethod.POST)
 	@ResponseBody
 	public Object requestFileDownloadURL(@PathVariable("fileKey") String fileKey) {

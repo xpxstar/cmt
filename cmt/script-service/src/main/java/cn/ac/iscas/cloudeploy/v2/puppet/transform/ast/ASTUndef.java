@@ -1,12 +1,16 @@
 package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ASTUndef extends ASTBase{
-    private String value;
-  
-	public String getValue() {
+	@Getter @Setter protected String value;
+	@Override
+	public String changeString(){
 		return value;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	@Override
+	public String elementName(){
+		return value;
 	}
 }

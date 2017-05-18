@@ -6,13 +6,21 @@ public class ASTCollection extends ASTBase{
 	private String doc;
 	private String type;
 	private String form;
+	private ASTBase override;
 	private ASTCollExpr query;
-	private List<Object> children;
+	private List<ASTBase> children;
 	public String getDoc() {
 		return doc;
 	}
 	public void setDoc(String doc) {
 		this.doc = doc;
+	}
+	
+	public ASTBase getOveride() {
+		return override;
+	}
+	public void setOverride(ASTBase override) {
+		this.override = override;
 	}
 	public String getType() {
 		return type;
@@ -26,10 +34,10 @@ public class ASTCollection extends ASTBase{
 	public void setForm(String form) {
 		this.form = form;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 	public ASTCollExpr getQuery() {

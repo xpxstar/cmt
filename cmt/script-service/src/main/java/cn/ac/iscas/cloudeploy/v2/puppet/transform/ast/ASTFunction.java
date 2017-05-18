@@ -2,12 +2,12 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 import java.util.List;
 
-public class ASTFunction extends ASTBase{
+public class ASTFunction extends ElementTop{
 	private String ftype;
 	private String doc;
 	private String name;
 	private ASTASTArray arguments;
-	private List<Object> children;
+	private List<ASTBase> children;
 	
 	public String getFtype() {
 		return ftype;
@@ -33,11 +33,25 @@ public class ASTFunction extends ASTBase{
 	public void setArguments(ASTASTArray arguments) {
 		this.arguments = arguments;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 	
+	@Override
+	public String changeString(){
+		StringBuffer sb = new StringBuffer();
+		sb.append(name);
+		for (ASTBase item : arguments.getChildren()) {
+			sb.append(" ");
+			sb.append(item.changeString());
+		}
+		return sb.toString();
+	}
+	@Override
+	public String elementName(){
+		return name;
+	}
 }

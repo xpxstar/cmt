@@ -85,9 +85,9 @@ public class Artifact{
 	public String toDocument(){
 		StringBuffer sb = new StringBuffer();
 		sb.append(name);
-		sb.append('/');
+		sb.append(' ');
 		sb.append(tags);
-		sb.append('/');
+		sb.append(' ');
 		sb.append(addition);
 		return sb.toString();
 	}

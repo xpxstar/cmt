@@ -46,6 +46,13 @@
 			<artifactId>jcabi-ssh</artifactId>
 			<version>1.5</version>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>cn.ac.iscas</groupId>
+			<artifactId>script-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cmt_app</finalName>

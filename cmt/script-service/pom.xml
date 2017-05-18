@@ -2,12 +2,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>cn.ac.iscas</groupId>
-    <artifactId>cmt1.0</artifactId>
+    <artifactId>cloudeploy2.0</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>script-service</artifactId>
   <name>script-service</name>
   <description>script-service</description>
+  <properties>
+  		<org.json.version>20160212</org.json.version>
+  		<lombok.version>1.16.6</lombok.version>
+	
+	</properties>
   <dependencies>
     <dependency>
     <groupId>org.freemarker</groupId>
@@ -24,5 +29,34 @@
 			<artifactId>file-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		  <!-- httpclient -->
+		<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpclient</artifactId>
+		  <version>4.3.3</version>
+		</dependency>
+	<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpcore</artifactId>
+		  <version>4.3.3</version>
+	</dependency>
+    <!-- json -->
+	<dependency>
+		<groupId>org.json</groupId>
+		<artifactId>json</artifactId>
+		<version>${org.json.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>${lombok.version}</version>
+		<scope>provided</scope>
+	</dependency>
+	<!-- compare ast (diff) -->
+	<dependency>
+    <groupId>fr.inria.gforge.spoon.labs</groupId>
+    <artifactId>gumtree-spoon-ast-diff</artifactId>
+    <version>1.0.0</version>
+</dependency>
   </dependencies>
 </project>

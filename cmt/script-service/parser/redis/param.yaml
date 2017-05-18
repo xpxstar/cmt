@@ -1,5 +1,5 @@
 --- 
-  - !ruby/object:Proxy::Puppet::PuppetClass
+  - !ruby/object:PuppetClass
     klass: redis
     type: !ruby/sym hostclass
     params: 
@@ -99,7 +99,7 @@
           line: 101
           file: 
           value: "redis::params::redis_saves"
-  - !ruby/object:Proxy::Puppet::PuppetClass
+  - !ruby/object:PuppetClass
     klass: "redis::instance"
     type: !ruby/sym definition
     params: 
@@ -169,7 +169,7 @@
           line: 81
           file: 
           value: "redis::params::redis_saves"
-  - !ruby/object:Proxy::Puppet::PuppetClass
+  - !ruby/object:PuppetClass
     klass: "redis::params"
     type: !ruby/sym hostclass
     params: {}

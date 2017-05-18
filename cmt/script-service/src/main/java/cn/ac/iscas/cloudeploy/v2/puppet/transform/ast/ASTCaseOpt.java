@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ASTCaseOpt extends ASTBase{
 	private ASTBlockExpression statements;
-	private List<Object> children;
+	private List<ASTBase> children;
 	private ASTASTArray value;
 	public ASTBlockExpression getStatements() {
 		return statements;
@@ -12,10 +12,10 @@ public class ASTCaseOpt extends ASTBase{
 	public void setStatements(ASTBlockExpression statements) {
 		this.statements = statements;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 	public ASTASTArray getValue() {

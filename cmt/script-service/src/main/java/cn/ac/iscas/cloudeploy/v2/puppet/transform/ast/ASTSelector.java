@@ -2,19 +2,23 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 
 public class ASTSelector extends ASTBlockExpression{
-	private ASTVariable param;
-	private ASTASTArray values;
+	private ASTBase param;
+	private ASTBase values;
 	
-	public ASTVariable getParam() {
+	public ASTBase getParam() {
 		return param;
 	}
-	public void setParam(ASTVariable param) {
+	public void setParam(ASTBase param) {
 		this.param = param;
 	}
-	public ASTASTArray getValues() {
+	public ASTBase getValues() {
 		return values;
 	}
-	public void setValues(ASTASTArray values) {
+	public void setValues(ASTBase values) {
 		this.values = values;
+	}
+	@Override
+	public String elementName(){
+		return param.elementName();
 	}
 }

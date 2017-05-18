@@ -29,20 +29,19 @@ public class ArtifactServiceTest {
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
 	public void queryTest() throws IOException {
-		Pageable page = new PageRequest(1, 5);
-		Page<Artifact> arts =  artifactService.query("php redis", page,"ansible");
+		Pageable page = new PageRequest(70, 6);
+		Page<Artifact> arts =  artifactService.queryCate("php","runtime", page,"ansible");
 		System.out.println(arts.getTotalElements());
 		System.out.println(arts.getNumber());
 		System.out.println(arts.getSize());
 		for (Artifact artifact : arts) {
-			System.out.print(artifact.getId()+"\t");
+			System.out.print(artifact.toDocument()+"\n");
 		}
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void flashIndex() throws IOException {
 		artifactService.frashIndex("ansible");
 		artifactService.frashIndex("puppet");

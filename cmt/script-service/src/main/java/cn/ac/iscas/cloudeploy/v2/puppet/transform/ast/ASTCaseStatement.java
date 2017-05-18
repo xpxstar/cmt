@@ -2,7 +2,7 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 public class ASTCaseStatement extends ASTBlockExpression{
 	private String doc;
-	private Object test;
+	private ASTBase test;
 	private ASTASTArray options;
 	
 	public String getDoc() {
@@ -11,10 +11,10 @@ public class ASTCaseStatement extends ASTBlockExpression{
 	public void setDoc(String doc) {
 		this.doc = doc;
 	}
-	public Object getTest() {
+	public ASTBase getTest() {
 		return test;
 	}
-	public void setTest(Object test) {
+	public void setTest(ASTBase test) {
 		this.test = test;
 	}
 	public ASTASTArray getOptions() {
@@ -23,5 +23,8 @@ public class ASTCaseStatement extends ASTBlockExpression{
 	public void setOptions(ASTASTArray options) {
 		this.options = options;
 	}
-	
+	@Override
+	public String elementName(){
+		return test.elementName();
+	}
 }

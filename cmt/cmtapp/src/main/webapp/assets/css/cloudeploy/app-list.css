@@ -276,6 +276,7 @@
 	min-width: 80%;
 }
 .analyze-title{
+	height:150px;
 	background-color: #F5F5F5;
     padding: 20px;
     border-bottom:1px solid #CCCCCC;

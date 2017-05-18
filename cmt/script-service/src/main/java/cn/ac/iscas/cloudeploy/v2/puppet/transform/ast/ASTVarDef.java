@@ -4,9 +4,9 @@ import java.util.List;
 
 public class ASTVarDef extends ASTBase{
 	private String doc;
-	private ASTName name;
-	private Object value;
-	private List<Object> children;
+	private ASTBase name;
+	private ASTBase value;
+	private List<ASTBase> children;
 	
 	public String getDoc() {
 		return doc;
@@ -14,23 +14,26 @@ public class ASTVarDef extends ASTBase{
 	public void setDoc(String doc) {
 		this.doc = doc;
 	}
-	public ASTName getName() {
+	public ASTBase getName() {
 		return name;
 	}
-	public void setName(ASTName name) {
+	public void setName(ASTBase name) {
 		this.name = name;
 	}
-	public Object getValue() {
+	public ASTBase getValue() {
 		return value;
 	}
-	public void setValue(Object value) {
+	public void setValue(ASTBase value) {
 		this.value = value;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
-	
+	@Override
+	public String elementName(){
+		return name.elementName();
+	}
 }

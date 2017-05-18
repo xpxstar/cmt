@@ -3,13 +3,13 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 import java.util.List;
 
 public class ASTResourceInstance extends ASTBase{
-	private Object title;
+	private ASTBase title;
 	private ASTASTArray parameters;
-	private List<Object> children;
-	public Object getTitle() {
+	private List<ASTBase> children;
+	public ASTBase getTitle() {
 		return title;
 	}
-	public void setTitle(Object title) {
+	public void setTitle(ASTBase title) {
 		this.title = title;
 	}
 	public ASTASTArray getParameters() {
@@ -18,10 +18,10 @@ public class ASTResourceInstance extends ASTBase{
 	public void setParameters(ASTASTArray parameters) {
 		this.parameters = parameters;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 }

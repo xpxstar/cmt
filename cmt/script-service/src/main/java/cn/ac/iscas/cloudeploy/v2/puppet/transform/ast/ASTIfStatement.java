@@ -2,7 +2,7 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 public class ASTIfStatement extends ASTBlockExpression{
 	private String doc;
-	private Object test;
+	private ASTBase test;
 	private ASTBlockExpression statements;
 	private ASTElse ifStatementElse;
 	
@@ -12,10 +12,10 @@ public class ASTIfStatement extends ASTBlockExpression{
 	public void setDoc(String doc) {
 		this.doc = doc;
 	}
-	public Object getTest() {
+	public ASTBase getTest() {
 		return test;
 	}
-	public void setTest(Object test) {
+	public void setTest(ASTBase test) {
 		this.test = test;
 	}
 	public ASTBlockExpression getStatements() {
@@ -30,5 +30,8 @@ public class ASTIfStatement extends ASTBlockExpression{
 	public void setIfStatementElse(ASTElse ifStatementElse) {
 		this.ifStatementElse = ifStatementElse;
 	}
-	
+	@Override
+	public String elementName(){
+		return test.elementName();
+	}
 }

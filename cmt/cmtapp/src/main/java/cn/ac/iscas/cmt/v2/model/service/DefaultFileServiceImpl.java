@@ -32,6 +32,7 @@ public class DefaultFileServiceImpl implements FileService {
 
 	private String fileRoot;
 
+	private String basePath;
 	@Autowired
 	private FileSourceDAO fileSourceDAO;
 
@@ -39,6 +40,7 @@ public class DefaultFileServiceImpl implements FileService {
 	private void init() {
 		
 		fileRoot = "f:/paper/scripts";//this.getClass().getClassLoader().getResource("").getPath();
+		basePath = this.getClass().getClassLoader().getResource("").getPath()+"/check";
 	}
 
 	@Override
@@ -126,6 +128,16 @@ public class DefaultFileServiceImpl implements FileService {
 		return md5;
 	}
 
+	@Override
+	public String savePuppetModule(ByteSource byteSource) throws IOException{
+		String absolutePath = basePath;//TODO calculateRelativePath(FileServiceUtils
+//				.randomString());
+		InputStream zin = byteSource.openStream();
+//		String absolutePath = fileRoot + File.separator + relativePath;
+		FileServiceUtils.Unzip(zin, absolutePath);
+		
+		return "success";
+	}
 	@Override
 	public String savePuppetFile(ByteSource byteSource) throws IOException{
 		Md5CachingByteSource md5ByteSource = Md5CachingByteSource

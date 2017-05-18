@@ -2,23 +2,23 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 import java.util.List;
 
-public class ASTNot extends ASTBase{
-	private Object value;
-	private List<Object> children;
+public class ASTNot extends ElementTop{
+	private ASTBase value;
+	private List<ASTBase> children;
 
-	public Object getValue() {
+	public ASTBase getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(ASTBase value) {
 		this.value = value;
 	}
 
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 }

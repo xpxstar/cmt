@@ -10,4 +10,8 @@ public class ASTRegex extends ASTBase{
 	public void setValue(String value) {
 		this.value = value;
 	}
+	@Override
+	public String changeString(){
+		return value.replaceAll(" ","");
+	}
 }

@@ -3,22 +3,22 @@ package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 import java.util.List;
 
 public class ASTCollExpr extends ASTBase{
-	private Object test1;
-	private Object test2;
+	private ASTBase test1;
+	private ASTBase test2;
 	private String oper;
-	private List<Object> children;
+	private List<ASTBase> children;
 	private String form;
 	private String type;
-	public Object getTest1() {
+	public ASTBase getTest1() {
 		return test1;
 	}
-	public void setTest1(Object test1) {
+	public void setTest1(ASTBase test1) {
 		this.test1 = test1;
 	}
-	public Object getTest2() {
+	public ASTBase getTest2() {
 		return test2;
 	}
-	public void setTest2(Object test2) {
+	public void setTest2(ASTBase test2) {
 		this.test2 = test2;
 	}
 	public String getOper() {
@@ -27,10 +27,10 @@ public class ASTCollExpr extends ASTBase{
 	public void setOper(String oper) {
 		this.oper = oper;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 	public String getForm() {

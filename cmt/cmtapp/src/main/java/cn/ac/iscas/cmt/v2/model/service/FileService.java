@@ -19,7 +19,9 @@ public interface FileService {
 
 		public String savePuppetFile(ByteSource byteSource) throws IOException;
 
-	ZipBuilder buildZipBuilder();
+		public String savePuppetModule(ByteSource byteSource) throws IOException;
+
+		ZipBuilder buildZipBuilder();
 
 	String saveZip(ZipBuilder builder) throws IOException;
 	

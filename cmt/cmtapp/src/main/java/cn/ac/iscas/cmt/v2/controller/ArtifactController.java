@@ -132,7 +132,7 @@ public class ArtifactController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = { "flashindex/type" },method = RequestMethod.GET)
+	@RequestMapping(value = { "flashindex/{type}" },method = RequestMethod.GET)
 	@ResponseBody
 	@Transactional
 	public String frashIndex(@PathVariable("type") String type) throws IOException {

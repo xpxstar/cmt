@@ -1,5 +1,5 @@
 var rootURI = function() {
-	return "/cmt_app";
+	return "/cmt";
 };
 
 var dURIs = {
@@ -10,7 +10,7 @@ var dURIs = {
 	domainURI : rootURI() + "/v2/domains",
 	hostURI : rootURI() + "/v2/hosts",
 	customFilesURI : rootURI() + "/v2/resources/files/custom",
-	filesURI : rootURI() + "/v2/files",
+	filesURI : rootURI() + "/v2/files/",
 	templateURI : rootURI() + "/v2/templates",
 	viewsURI : {
 		artList : rootURI() + "/v2/views/artifact/list",

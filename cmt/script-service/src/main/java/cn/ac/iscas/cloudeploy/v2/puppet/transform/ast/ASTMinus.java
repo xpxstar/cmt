@@ -1,13 +1,13 @@
 package cn.ac.iscas.cloudeploy.v2.puppet.transform.ast;
 
 public class ASTMinus extends ASTBlockExpression{
-	private Object value;
+	private ASTBase value;
 
-	public Object getValue() {
+	public ASTBase getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(ASTBase value) {
 		this.value = value;
 	}
 	

@@ -38,3 +38,4 @@ local.properties
 
 */target/*
 /target/
+/logging.log

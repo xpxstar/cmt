@@ -6,7 +6,7 @@ public class ASTResourceDefaults extends ASTBase{
 	private String doc;
 	private String type;
 	private ASTASTArray parameters;
-	private List<Object> children;
+	private List<ASTBase> children;
 	public String getDoc() {
 		return doc;
 	}
@@ -25,10 +25,10 @@ public class ASTResourceDefaults extends ASTBase{
 	public void setParameters(ASTASTArray parameters) {
 		this.parameters = parameters;
 	}
-	public List<Object> getChildren() {
+	public List<ASTBase> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Object> children) {
+	public void setChildren(List<ASTBase> children) {
 		this.children = children;
 	}
 	

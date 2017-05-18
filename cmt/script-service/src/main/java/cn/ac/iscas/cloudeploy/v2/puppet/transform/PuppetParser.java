@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 import com.google.common.base.Charsets;
@@ -24,6 +23,7 @@ import com.google.common.io.Files;
 
 import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTASTArray;
 import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTASTHash;
+import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTBase;
 import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTBlockExpression;
 import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTBoolean;
 import cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.ASTConcat;
@@ -47,6 +47,11 @@ public class PuppetParser {
 	private List<ResouceType> trees;
 	private List<PuppetClass> classes;
 	
+	public PuppetParser() {
+		super();
+	}
+
+
 	public PuppetParser(String inputFilePath,String moduleName){
 		File file=new File(System.getProperty("user.dir")+"\\parser",moduleName);
 		if(!file.exists()){
@@ -57,6 +62,7 @@ public class PuppetParser {
 		treeOutFilePath=file.getAbsolutePath()+"\\tree.yaml";
 		resultFilePath=file.getAbsolutePath()+"\\result.yaml";
 	}
+
 	
 	/**
 	 * 解析module
@@ -69,6 +75,20 @@ public class PuppetParser {
 			classes=extractParams(paramOutFilePath);
 			Files.write(yaml.dumpAll(classes.iterator()), new File(resultFilePath), Charsets.UTF_8);
 			return classes;
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 解析 单个module puppet 文件
+	 * @return 
+	 */
+	public ResouceType parserSingle(String rubyEnvironment,String PuppetParserSource,String PuppetAnalyseRuby,String input,String output){
+		try {
+			usingRubyAnalyseSingle(rubyEnvironment,PuppetParserSource,PuppetAnalyseRuby,input,output);
+			ResouceType tree=extractTree(output);
+			return tree;
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +108,36 @@ public class PuppetParser {
 		}
 		return resouceTypes;
 	}
-	
+	/**
+	 * 提取出单个Module的语法树集合
+	 * @param filePath 语法树yaml文件路径
+	 */
+	public ResouceType extractTree(String filePath) {
+		logger.info(filePath);
+		String content=preProcess(new File(filePath));
+		Object object = yaml.load(content);
+		ResouceType resouceTypes = (ResouceType) object;
+		cancelVariable(resouceTypes);
+		return resouceTypes;
+	}
+	/**
+	 * 提取出单个Module的语法树集合
+	 * @param filePath 语法树yaml文件路径
+	 */
+	public ResouceType extractTree(File file) {
+		logger.info(file.getName());
+		if (!file.exists()) {
+			return null;
+		}
+		String content=preProcess(file);
+		if (null == content||"".equals(content)) {
+			return null;
+		}
+		Object object = yaml.load(content);
+		ResouceType resouceTypes = (ResouceType) object;
+		cancelVariable(resouceTypes);
+		return resouceTypes;
+	}
 	/**
 	 * 提取所有类以及参数值
 	 * @param filePath params Yaml文件路径
@@ -121,7 +170,7 @@ public class PuppetParser {
 					variables.put(((ASTVariable)puppetParamType).getValue(), puppetParam);
 				}
 				else if(puppetParamType instanceof ASTConcat){
-					List<Object> childrens = ((ASTConcat) puppetParamType).getValue();
+					List<ASTBase> childrens = ((ASTConcat) puppetParamType).getValue();
 					for (Object childrenItem : childrens) {
 						if(childrenItem instanceof ASTVariable){
 							variables.put(((ASTVariable)childrenItem).getValue(), puppetParam);
@@ -146,11 +195,42 @@ public class PuppetParser {
 		}
 		return classes;
 	}
-	
+	/**
+	 * 将ResouceType中参数值为变量的参数重新赋值
+	 * @param params
+	 * @param tree
+	 * @return
+	 */
+	private ResouceType cancelVariable(ResouceType puppetClass){
+//		LinkedHashMultimap<String, PuppetParam> variables=LinkedHashMultimap.create();
+			Set<Entry<String, ASTBase>> params = puppetClass.getArguments().entrySet();
+			for (Entry<String, ASTBase> puppetParam : params) {
+				ASTBase value = puppetParam.getValue();
+				ASTString nvalue = new ASTString();
+				if (value != null) {
+					nvalue.setFile(value.getFile());
+					nvalue.setLine(value.getLine());
+					nvalue.setValue(formatParamValueByObjectType(value));
+				}
+				puppetParam.setValue(nvalue);
+			}
+		/*Set<String> keyset = variables.keySet();
+		for (String key : keyset) {
+			Object variableTrueValue = getValueByTraversalTree(key);
+			logger.info(key+":"+variableTrueValue);
+			if(variableTrueValue==null) continue;
+			Set<PuppetParam> puppetParams = variables.get(key);
+			for (PuppetParam puppetParam : puppetParams) {
+				puppetParam.setValue(formatParamValueByObjectType(variableTrueValue));
+				puppetParam.setType(variableTrueValue);
+			}
+		}*/
+		return puppetClass;
+	}
 	@SuppressWarnings("unchecked")
-	private Object formatParamValueByObjectType(Object valueObject){
+	private String formatParamValueByObjectType(Object valueObject){
 		if (valueObject instanceof ASTConcat) {
-			List<Object> concatValues = ((ASTConcat) valueObject).getValue();
+			List<ASTBase> concatValues = ((ASTConcat) valueObject).getValue();
 			StringBuilder builder=new StringBuilder();
 //			builder.append("\"");
 			for (Object concatValueItem : concatValues) {
@@ -161,7 +241,7 @@ public class PuppetParser {
 		} else if (valueObject instanceof ASTString) {
 			return ((ASTString) valueObject).getValue();
 		} else if (valueObject instanceof ASTBoolean) {
-			return ((ASTBoolean) valueObject).isValue();
+			return String.valueOf(((ASTBoolean) valueObject).isValue());
 		} else if (valueObject instanceof ASTASTArray) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("[");
@@ -221,13 +301,13 @@ public class PuppetParser {
 			builder.append("]");
 			return builder.toString();
 		}
-		return valueObject;
+		return "";
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object getValueByObjectType(Object valueObject,ResouceType resouceType){
-		if(valueObject instanceof ASTVariable){
-			String variableName = ((ASTVariable) valueObject).getValue();
+	private ASTBase getValueByObjectType(Object object,ResouceType resouceType){
+		if(object instanceof ASTVariable){
+			String variableName = ((ASTVariable) object).getValue();
 			if(variableName.contains("::")){
 				return getValueByTraversalTree(variableName);
 			}
@@ -235,43 +315,50 @@ public class PuppetParser {
 				return getValueFromResourceType(resouceType,variableName);
 			}
 		}
-		else if(valueObject instanceof ASTConcat){
-			List<Object> concatValues = ((ASTConcat) valueObject).getValue();
+		else if(object instanceof ASTConcat){
+			List<ASTBase> concatValues = ((ASTConcat) object).getValue();
 			for (int i = 0; i < concatValues.size(); i++) {
-				Object concatValueItem=concatValues.get(i);
+				ASTBase concatValueItem=concatValues.get(i);
 				concatValues.set(i, getValueByObjectType(concatValueItem, resouceType));
 			}
 		}
-		else if(valueObject instanceof ASTASTHash){
-			Map<Object, Object> hashValues = ((ASTASTHash) valueObject)
+		else if(object instanceof ASTASTHash){
+			Map<Object, Object> hashValues = ((ASTASTHash) object)
 					.getValue();
-			for (Object entryObject : hashValues.entrySet()) {
-				Entry<Object, Object> item = (Entry<Object, Object>) entryObject;
-				Object itemValue=getValueByObjectType(item.getValue(),resouceType);
+			for (Entry<Object, Object> entryObject : hashValues.entrySet()) {
+				Entry<Object, Object> item = entryObject;
+				
+				ASTBase itemValue=getValueByObjectType(item.getValue(),resouceType);
 				hashValues.put(item.getKey(),itemValue!=null?itemValue:item.getValue());
 			}
 		}
-		else if(valueObject instanceof ASTFunction || valueObject instanceof ASTSelector){
+		else if(object instanceof ASTFunction || object instanceof ASTSelector){
 			return null;
 		}
-		return valueObject;
+		if (object instanceof String) {
+			object = new ASTString((String)object);
+		}
+		return (ASTBase)object;
 	}
 
-	private Object getValueFromResourceType(ResouceType resouceType,String paramName){
+	private ASTBase getValueFromResourceType(ResouceType resouceType,String paramName){
 		//首先从argument中查询
-		Object paramObject=resouceType.getArguments().get(paramName);
-		Object paramValue = getValueByObjectType(paramObject,resouceType);
+		ASTBase paramObject=resouceType.getArguments().get(paramName);
+		ASTBase paramValue = getValueByObjectType(paramObject,resouceType);
 		if(paramValue!=null){
 			return paramValue;
 		}
 		else{//没有查询到，去codeBlock中查找
 			ASTBlockExpression blockCodes = resouceType.getCode();
-			List<Object> blockChildrens = blockCodes.getChildren();
-			for (Object blockChildrenItem : blockChildrens) {
+			List<ASTBase> blockChildrens = blockCodes.getChildren();
+			for (ASTBase blockChildrenItem : blockChildrens) {
 				if(blockChildrenItem instanceof ASTVarDef){
-					String varDefName=((ASTVarDef) blockChildrenItem).getName().getValue();
+					if (((ASTVarDef) blockChildrenItem).getName() instanceof ASTHashOrArrayAccess) {
+						
+					}
+					String varDefName=((ASTVarDef) blockChildrenItem).getName().changeString();
 					if(varDefName.equals(paramName)){
-						Object varDefValueObject=((ASTVarDef) blockChildrenItem).getValue();
+						ASTBase varDefValueObject=((ASTVarDef) blockChildrenItem).getValue();
 						return getValueByObjectType(varDefValueObject, resouceType);
 					}
 				}
@@ -285,7 +372,7 @@ public class PuppetParser {
 	 * @param variable
 	 * @return
 	 */
-	public Object getValueByTraversalTree(String variable){
+	public ASTBase getValueByTraversalTree(String variable){
 		String regex=":{0,2}(([a-zA-Z0-9_]+::)*)([a-zA-Z0-9_]+)";
 		Pattern pattern=Pattern.compile(regex);
 		Matcher matcher=pattern.matcher(variable);
@@ -329,20 +416,45 @@ public class PuppetParser {
 		}
 	}
 	
-	
+	/**用ruby解析单个 Module，生成中间文件
+	 * @param inputFilePath 输入目标文件
+	 * @param output 输出目录
+	 * @param rubyEnvironment ruby环境
+	 * @param PuppetParserSource ruby依赖的库
+	 * @param PuppetAnalyseRuby 目标程序
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void usingRubyAnalyseSingle(String rubyEnvironment,String PuppetParserSource,String PuppetAnalyseRuby,String inputFilePath,String output) throws IOException, InterruptedException{
+		String command=rubyEnvironment+" -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift) "+PuppetAnalyseRuby;
+//		String command=" -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift) E:/jruby/smart-proxy-develop/richard/first_ruby.rb";
+		command=command+" "+inputFilePath+" "+output;
+		logger.info(command);
+		Process process = Runtime.getRuntime().exec(command,null,new File(PuppetParserSource));
+//		Process process = Runtime.getRuntime().exec(command,null,new File("E:/jruby/smart-proxy-develop/"));
+		printStream(process.getInputStream());
+		printStream(process.getErrorStream());
+		int exitValue = process.waitFor();
+		if(exitValue!=0){
+			throw new RuntimeException("解析"+inputFilePath+" module失败");
+		}
+	}
 	
 	// 对Yaml文件做预处理
 	private static String preProcess(File file) {
 		String content=null;
 		try {
 			content = Files.toString(file, Charsets.UTF_8);
+//			content=content.replaceAll("\\{\\}", "");
 			content=content.replaceAll("!|！", "#");
 			content=content.replaceAll("#ruby/object:Puppet::Resource::Type","!!cn.ac.iscas.cloudeploy.v2.puppet.transform.ResouceType");
 			content=content.replaceAll("#ruby/sym ", "");
+			content=content.replaceAll("#ruby/regexp ", "");
 			content=content.replaceAll("#ruby/object:PuppetClass","!!cn.ac.iscas.cloudeploy.v2.puppet.transform.PuppetClass");
 			content=content.replaceAll("#ruby/object:Proxy::Puppet::PuppetClass","!!cn.ac.iscas.cloudeploy.v2.puppet.transform.PuppetClass");
 			content=content.replaceAll("else: #ruby/object:Puppet::Parser::AST::Else", "ifStatementElse: #ruby/object:Puppet::Parser::AST::Else");
 			content=content.replaceAll("#ruby/object:Puppet::Parser::AST::", "!!cn.ac.iscas.cloudeploy.v2.puppet.transform.ast.AST");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

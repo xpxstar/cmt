@@ -27,6 +27,7 @@ public class AnalyzeServiceTest {
 	 * @throws IOException
 	 */
 	@Test
+	@Ignore
 	public void lintCheckTest() throws IOException {
 		Map<String, List<String>> arts =  analyzeService.lintCheck("myhadoop");
 		for (String key : arts.keySet()) {
@@ -34,7 +35,6 @@ public class AnalyzeServiceTest {
 		}
 	}
 	@Test
-	@Ignore
 	public void syntaxCheckTest() throws IOException {
 		String arts =  analyzeService.syntaxCheck("install.pp");
 		System.out.println(arts);
